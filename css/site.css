@@ -127,16 +127,17 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 /* ---------- instagram strip ---------- */
 .igs{overflow:hidden}
 .igh{display:flex;justify-content:space-between;align-items:baseline;gap:24px;margin-bottom:32px}
-.igwrap{position:relative}
-/* edges fade into the paper so the strip reads as a band, not a cut-off row */
-.igwrap::before,.igwrap::after{content:"";position:absolute;top:0;bottom:0;width:88px;z-index:2;pointer-events:none}
-.igwrap::before{left:0;background:linear-gradient(to right,var(--paper),transparent)}
-.igwrap::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
-.igtrack{display:flex;gap:20px;width:max-content;animation:igdrift 120s linear infinite}
-/* pause purely through stylesheet rules — an inline style would out-rank :hover */
-.igwrap:hover .igtrack,.igwrap:focus-within .igtrack,
-.igs.paused .igtrack{animation-play-state:paused}
-@keyframes igdrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+/* the mask never scrolls, so the edge fades stay put while the strip moves */
+.igmask{position:relative}
+.igmask::before,.igmask::after{content:"";position:absolute;top:0;bottom:0;width:88px;z-index:2;pointer-events:none}
+.igmask::before{left:0;background:linear-gradient(to right,var(--paper),transparent)}
+.igmask::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
+/* a real scroll container, not a transformed track: the finger and the drift
+   then share one mechanism instead of fighting each other */
+.igwrap{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;
+  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+.igwrap::-webkit-scrollbar{display:none}
+.igtrack{display:flex;gap:20px;width:max-content}
 
 .igt{position:relative;flex:0 0 auto;width:300px;display:flex;flex-direction:column;
   background:var(--paper);border:1px solid var(--line-soft)}
@@ -157,21 +158,10 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
   border-left:10px solid rgba(255,255,255,.95);border-top:7px solid transparent;border-bottom:7px solid transparent;
   filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
 @media (max-width:640px){
-  .igt{width:78vw}
+  .igt{width:68vw}
   .igh{margin-bottom:22px}
-  .igwrap::before,.igwrap::after{width:24px}
-  /* on touch the drift fights the finger — let people swipe instead */
-  .igwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
-    scroll-snap-type:x mandatory;padding-inline:var(--pad)}
-  .igwrap::-webkit-scrollbar{display:none}
-  .igtrack{animation:none;width:auto;padding-right:var(--pad)}
-  .igt{scroll-snap-align:center}
-  .igtrack .igt[aria-hidden="true"]{display:none}
-}
-@media (prefers-reduced-motion:reduce){
-  .igwrap{overflow-x:auto}
-  .igtrack{animation:none;width:auto}
-  .igtrack .igt[aria-hidden="true"]{display:none}
+  .igmask::before,.igmask::after{width:24px}
+  .igtrack{gap:14px}
 }
 
 /* ---------- section arrival (one idiom, same curve as the hero) ---------- */

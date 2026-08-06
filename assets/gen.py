@@ -377,8 +377,10 @@ def ig_strip():
     <h2>Kasdienybė iš studijos</h2>
     <a class="ulink" href="https://www.instagram.com/{feed['handle']}/" rel="noopener" target="_blank">@{feed['handle']}</a>
   </div>
-  <div class="igwrap">
-    <div class="igtrack">{tiles}{dup}</div>
+  <div class="igmask">
+    <div class="igwrap">
+      <div class="igtrack">{tiles}{dup}</div>
+    </div>
   </div>
 </section>'''
 

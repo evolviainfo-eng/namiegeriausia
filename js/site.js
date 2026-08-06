@@ -67,14 +67,8 @@
   /* ---- instagram strip ---- */
   var igs = document.querySelector('.igs');
   if (igs) {
-    // pause off-screen via a CLASS, so :hover in the stylesheet still wins
     var igw = igs.querySelector('.igwrap');
-    if (igw && 'IntersectionObserver' in window) {
-      igs.classList.add('paused');
-      new IntersectionObserver(function (es) {
-        igs.classList.toggle('paused', !es[0].isIntersecting);
-      }, { threshold: 0 }).observe(igw);
-    }
+    var igtrack = igs.querySelector('.igtrack');
     var tileImgs = [].slice.call(igs.querySelectorAll('.igt img'));
 
     // fade each tile in and drop its blur placeholder the moment it paints,
@@ -104,6 +98,64 @@
         });
       }, { rootMargin: '900px 0px' });
       warm.observe(igs);
+    }
+
+    /* ---- the drift ----
+       Driven by scrollLeft, so touch, trackpad and the drift all use the same
+       mechanism — the strip moves on phones too and a finger never fights it.
+       Hovering does not stop it: the pointer's horizontal position steers the
+       direction instead, left half back, right half forward. No arrows, dots
+       or counters — the strip itself is the control. */
+    if (igw && igtrack && !reduce) {
+      var BASE = 0.35, SWING = 3.1;     // px per frame at 60fps
+      var vel = BASE, target = BASE, held = false, visible = false, raf = 0;
+
+      function half() { return igtrack.scrollWidth / 2; }   // one full copy
+
+      function frame() {
+        raf = 0;
+        if (!visible) return;
+        if (!held) {
+          vel += (target - vel) * 0.06;                     // ease, never snap
+          igw.scrollLeft += vel;
+        }
+        var h = half();
+        if (h > 0) {                                        // seamless both ways
+          if (igw.scrollLeft >= h) igw.scrollLeft -= h;
+          else if (igw.scrollLeft <= 0) igw.scrollLeft += h;
+        }
+        raf = requestAnimationFrame(frame);
+      }
+      function run() { if (!raf && visible) raf = requestAnimationFrame(frame); }
+
+      igw.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch') return;              // let the finger lead
+        var r = igw.getBoundingClientRect();
+        var p = (e.clientX - r.left) / r.width;             // 0 left … 1 right
+        target = BASE + (Math.min(1, Math.max(0, p)) - 0.5) * 2 * SWING;
+      });
+      igw.addEventListener('pointerleave', function () { target = BASE; });
+
+      // while a finger or trackpad is actually dragging, stand down completely
+      ['pointerdown', 'touchstart'].forEach(function (t) {
+        igw.addEventListener(t, function () { held = true; }, { passive: true });
+      });
+      ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(function (t) {
+        igw.addEventListener(t, function () {
+          held = false; target = BASE;
+        }, { passive: true });
+      });
+
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          visible = es[0].isIntersecting;                   // no work off-screen
+          run();
+        }, { threshold: 0 }).observe(igw);
+      } else { visible = true; run(); }
+
+      document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) run();
+      });
     }
   }
 
