@@ -106,7 +106,10 @@
        pixels-per-second on a phone as on a 27" display, and only lets it run
        while it is actually on screen. */
     if (igtrack && !reduce) {
-      var PPS = 34;                                        // pixels per second
+      // Below roughly 1px per frame the eye reads shimmer, not glide: at 34px/s
+      // the strip moved 0.57px a frame and the captions crawled. 78px/s puts it
+      // at ~1.3px a frame, which reads as deliberate, continuous motion.
+      var PPS = 78;                                        // pixels per second
 
       function setSpeed() {
         var half = igtrack.scrollWidth / 2;                // one full copy

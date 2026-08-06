@@ -147,8 +147,11 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 /* after the .go rule so equal specificity resolves in hover's favour */
 .igmask:hover .igtrack,.igmask:focus-within .igtrack{animation-play-state:paused}
 
+/* no hairline border: a 1px edge inside a continuously translated layer lands
+   on fractional pixels every frame and shimmers. A filled card reads the same
+   against the paper and stays perfectly still. */
 .igt{position:relative;flex:0 0 auto;width:300px;display:flex;flex-direction:column;
-  background:var(--paper);border:1px solid var(--line-soft)}
+  background:var(--surface)}
 .igim{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:var(--surface) center/cover}
 .igim.ok{background-image:none!important}          /* real image painted — drop the blur */
 .igt img{width:100%;height:100%;object-fit:cover;opacity:0;
