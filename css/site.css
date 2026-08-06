@@ -248,16 +248,15 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 }
 
 /* ---------- project pages ---------- */
-.pop{position:relative;height:min(72svh,760px);min-height:420px;overflow:hidden;background:var(--surface)}
-.pop img{width:100%;height:100%;object-fit:cover}
-.phead{padding-top:88px}
+.phead{padding-top:120px}
+@media (max-width:640px){.phead{padding-top:72px}}
 .phead .crumb{font-size:var(--s0)}
 .back{display:inline-block;padding:8px 0;font-size:var(--s1);color:var(--muted);transition:color var(--t1) var(--ui)}
 .back:hover,.back:focus-visible{color:var(--ink)}
 .phead h1{font-size:var(--s5);margin-top:18px}
 .phead .pmeta{margin-top:16px;font-size:var(--s1);color:var(--muted)}
 .phead .lead{margin-top:36px;font-size:var(--s3);font-weight:300;line-height:1.5;max-width:52ch}
-.pgal{margin-top:104px;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;row-gap:72px}
+.pgal{margin-top:72px;display:grid;grid-template-columns:repeat(12,1fr);gap:24px;row-gap:72px}
 .pgal figure{background:var(--surface);overflow:hidden;max-height:80svh}
 .pgal .full{grid-column:1/-1;aspect-ratio:16/9}
 .pgal .h6{grid-column:span 6;aspect-ratio:4/3}
