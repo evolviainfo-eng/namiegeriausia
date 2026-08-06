@@ -101,60 +101,33 @@
     }
 
     /* ---- the drift ----
-       Driven by scrollLeft rather than a CSS transform, so the finger, the
-       trackpad and the drift all share one mechanism — that is what lets the
-       strip move on phones too without fighting a swipe.
-       Constant speed, one direction. Hovering pauses it; nothing else steers. */
-    if (igw && igtrack && !reduce) {
-      var SPEED = 0.35;                                   // px per frame at 60fps
-      var hover = false, held = false, visible = false, raf = 0;
-      // Own the position as a float. Mobile Safari rounds scrollLeft to whole
-      // pixels, so `scrollLeft += 0.35` read back unchanged and the strip never
-      // moved at all. Accumulating here and assigning keeps sub-pixel speed.
-      var pos = igw.scrollLeft;
+       The animation itself is pure CSS on the compositor. JS only sets its
+       duration from the measured width, so the strip travels at the same
+       pixels-per-second on a phone as on a 27" display, and only lets it run
+       while it is actually on screen. */
+    if (igtrack && !reduce) {
+      var PPS = 34;                                        // pixels per second
 
-      function frame() {
-        raf = 0;
-        if (!visible) return;
-        var h = igtrack.scrollWidth / 2;                   // one full copy
-        if (hover || held) {
-          pos = igw.scrollLeft;                            // user leads, we follow
-        } else {
-          pos += SPEED;
-          if (h > 0) {                                     // seamless both ways
-            if (pos >= h) pos -= h;
-            else if (pos < 0) pos += h;
-          }
-          igw.scrollLeft = pos;
-        }
-        raf = requestAnimationFrame(frame);
+      function setSpeed() {
+        var half = igtrack.scrollWidth / 2;                // one full copy
+        if (half > 0) igtrack.style.animationDuration = (half / PPS).toFixed(1) + 's';
       }
-      function run() { if (!raf && visible) raf = requestAnimationFrame(frame); }
+      setSpeed();
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(setSpeed);
+      window.addEventListener('load', setSpeed);
 
-      // hover only exists on pointing devices — phones never set this
-      igw.addEventListener('pointerenter', function (e) {
-        if (e.pointerType !== 'touch') hover = true;
-      });
-      igw.addEventListener('pointerleave', function () { hover = false; });
-
-      // while a finger or trackpad is actually dragging, stand down completely
-      ['pointerdown', 'touchstart'].forEach(function (t) {
-        igw.addEventListener(t, function () { held = true; }, { passive: true });
-      });
-      ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(function (t) {
-        igw.addEventListener(t, function () { held = false; }, { passive: true });
-      });
+      var rt;
+      window.addEventListener('resize', function () {
+        clearTimeout(rt); rt = setTimeout(setSpeed, 200);
+      }, { passive: true });
 
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (es) {
-          visible = es[0].isIntersecting;                  // no work off-screen
-          run();
-        }, { threshold: 0 }).observe(igw);
-      } else { visible = true; run(); }
-
-      document.addEventListener('visibilitychange', function () {
-        if (!document.hidden) run();
-      });
+          igs.classList.toggle('go', es[0].isIntersecting);  // no work off-screen
+        }, { threshold: 0 }).observe(igs);
+      } else {
+        igs.classList.add('go');
+      }
     }
   }
 

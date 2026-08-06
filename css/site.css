@@ -134,15 +134,18 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 .igmask::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
 /* a real scroll container, not a transformed track: the finger and the drift
    then share one mechanism instead of fighting each other */
-/* scroll-behavior MUST be auto here: html{scroll-behavior:smooth} is inherited,
-   which turns every per-frame scrollLeft write into a fresh smooth-scroll
-   request that cancels the previous one — the strip then stalls on mobile.
-   -webkit-overflow-scrolling:touch is also gone: it puts the container on its
-   own iOS scrolling layer where programmatic scrollLeft is unreliable. */
-.igwrap{overflow-x:auto;overflow-y:hidden;scroll-behavior:auto;
-  scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain}
-.igwrap::-webkit-scrollbar{display:none}
-.igtrack{display:flex;gap:20px;width:max-content}
+/* Driven by transform, not scrollLeft. Writing scrollLeft every frame is
+   main-thread work and mobile Safari rounds it to whole pixels, so the strip
+   visibly stepped instead of gliding. A transform animation runs on the
+   compositor and is smooth on both desktop and phone. */
+.igwrap{overflow:hidden}
+.igtrack{display:flex;gap:20px;width:max-content;
+  animation:igdrift linear infinite;animation-play-state:paused;
+  will-change:transform;transform:translate3d(0,0,0);backface-visibility:hidden}
+.igs.go .igtrack{animation-play-state:running}
+@keyframes igdrift{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+/* after the .go rule so equal specificity resolves in hover's favour */
+.igmask:hover .igtrack,.igmask:focus-within .igtrack{animation-play-state:paused}
 
 .igt{position:relative;flex:0 0 auto;width:300px;display:flex;flex-direction:column;
   background:var(--paper);border:1px solid var(--line-soft)}
@@ -167,6 +170,11 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
   .igh{margin-bottom:22px}
   .igmask::before,.igmask::after{width:24px}
   .igtrack{gap:14px}
+}
+@media (prefers-reduced-motion:reduce){
+  .igtrack{animation:none;width:max-content}
+  .igwrap{overflow-x:auto;scrollbar-width:none}   /* still browsable by hand */
+  .igwrap::-webkit-scrollbar{display:none}
 }
 
 /* ---------- section arrival (one idiom, same curve as the hero) ---------- */
