@@ -1,0 +1,46 @@
+name: Instagram juostos atnaujinimas
+
+# Kartą per parą pasiima naujausius viešus @namiegeriausia įrašus,
+# perdaro juos į WebP ir, jei kas pasikeitė, sukommitina — Vercel
+# tuomet pats persideploy'ina. Jokio tokeno, jokio kliento įsikišimo.
+on:
+  schedule:
+    - cron: '20 5 * * *'      # 05:20 UTC ≈ 07:20/08:20 Lietuvoje
+  workflow_dispatch:           # leidžia paleisti ranka iš Actions skilties
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - run: pip install --quiet Pillow
+
+      - name: Pasiimti naujausius įrašus
+        run: python3 assets/fetch_ig.py
+
+      - name: Perkurti puslapius
+        run: python3 assets/gen.py
+
+      - name: Sukommitinti, jei kas pasikeitė
+        run: |
+          if git diff --quiet -- data/ig-feed.json img index.html; then
+            echo "Nieko naujo — praleidžiama."
+            exit 0
+          fi
+          git config user.name  "evolviainfo-eng"
+          git config user.email "evolvia.info@gmail.com"
+          git add data/ig-feed.json img index.html
+          git commit -m "Instagram juosta: automatinis atnaujinimas"
+          git push

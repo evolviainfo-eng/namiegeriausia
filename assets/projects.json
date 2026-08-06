@@ -1,0 +1,218 @@
+[
+  {
+    "slug": "misko-namai",
+    "title": "Miško namai",
+    "lead": "Būstas mieste, bet miške",
+    "meta": "Butas · Vilnius · pilnas įrengimas",
+    "cover": [1, 1],
+    "anchor": 0.4,
+    "intro": "Kurtas su didele meile ir atsidavimu apgalvojant kiekvieną detalę iki smulkmenų. Įkvėptas gamtos ir pačių klientų.",
+    "notes": [
+      {
+        "h": "Lubų aukštis",
+        "t": "Vienas iš pagrindinių šio būsto iššūkių buvo maksimalus lubų aukščio išsaugojimas, tad rekuperaciją planavome taip, kad difuzoriai liktų sienose ir pagrindinė gyvenamoji erdvė būtų be papildomų gipso kartono lubų, o tik su tinkamai apdirbta perdanga ir teisingai suplanuotais šviestuvais."
+      },
+      {
+        "h": "Nugriauta siena",
+        "t": "Griovėme sieną, kuri ribojosi su darbo kambariu, ir šio kambario sąskaita formavome nišą įeinamam dušui. Rezultate šlapia dušo zona lieka toliau nuo pagrindinės erdvės, tad pasirinkome ją palikti visai atvirą, nededant stiklo durelių."
+      },
+      {
+        "h": "Akmens praustuvas",
+        "t": "Šio vonios kambario žvaigždė — akmens praustuvas. Ir išduosiu vieną paslaptį, kad jis stovi ant stalviršio, pagaminto iš plytelės. Taip, lygiai tokios pat plytelės, kokias matote ant grindų ir sienų."
+      },
+      {
+        "h": "Du sanitariniai mazgai",
+        "t": "Viename — vonia ir unikali dušo zona, kitame — WC ir ūkinė skalbyklės bei džiovyklės spinta."
+      }
+    ],
+    "quote": "Ramybė viduje ir nuostabus miško vaizdas pro langus.",
+    "partners": ["structa.lt", "Cosentino Baltics", "Hust Design", "Skandinaviškos grindys", "Alpi Wood", "IKS Forma", "Jasevičiaus baldai"],
+    "images": [
+      [6, 1], [1, 1], [1, 2], [5, 0], [6, 3], [2, 3], [2, 1], [4, 3],
+      [1, 3], [2, 0], [6, 0], [5, 1], [4, 1], [0, 3], [5, 3], [6, 4],
+      [1, 0], [4, 0], [2, 5], [0, 7]
+    ],
+    "process": true
+  },
+  {
+    "slug": "cashmere",
+    "title": "Cashmere",
+    "lead": "Ramybė ir elegancija viename atspalvyje",
+    "meta": "Butas · pilnas įrengimas",
+    "cover": [11, 0],
+    "anchor": 0.4,
+    "intro": "Interjero koncepcija, kurioje susilieja ramybė bei elegancija. Šios erdvės alsuoja harmonija ir natūralumu — čia vyrauja viena mano mylimiausių spalvų „Cashmere“.",
+    "notes": [
+      {
+        "h": "Organiškos formos — saikingai",
+        "t": "Nors interjere yra ir lenktų, frezuotų elementų, jie panaudoti saikingai ir teisingai — rečiau eksploatuojamose zonose, kuriose yra mažesnė tikimybė juos pažeisti."
+      },
+      {
+        "h": "Prieškambaris",
+        "t": "Norėjome, kad prieškambaris pasitiktų ne tik savo funkcionalumu su dviem talpiomis spintomis, iš kurių viena slepia techninius prietaisus, bet ir estetika bei jaukumu."
+      },
+      {
+        "h": "Penki apšvietimo scenarijai vonioje",
+        "t": "Priekinis ir galinis veidrodžio LED, naktinis apšvietimas po spintele su judesio davikliu, buteliukų nišos apšvietimas, dimeriuojama juosta lubų nišoje ir standartinė šviesa lubose — kai romantikos mažiau, nes reikia tvarkyti."
+      }
+    ],
+    "quote": "Natūralūs atspalviai erdvėje kuria harmoningą nuotaiką, o organiškos formos tarsi kviečia atsipalaiduoti. Tokio jausmo juk ir norisi namuose.",
+    "partners": ["Giziro „Technomatt“", "Trukmė", "Hust Design"],
+    "images": [
+      [11, 0], [11, 1], [11, 2], [13, 0], [17, 0], [16, 0], [11, 3], [11, 4],
+      [17, 2], [16, 1], [11, 5], [11, 6], [17, 1], [11, 7], [11, 8], [17, 3],
+      [11, 9], [11, 10], [17, 4], [11, 11]
+    ]
+  },
+  {
+    "slug": "slaitines-lubos",
+    "title": "Šlaitinės lubos",
+    "lead": "Butas, kuris jaučiasi kaip namas",
+    "meta": "Butas · projektas ir realizacija",
+    "cover": [23, 0],
+    "anchor": 0.45,
+    "intro": "Nuostabios šeimos butas su šlaitinėmis lubomis svetainėje, kas sukuria namo jausmą. Naudojome šviesias, šiltas ir jaukias spalvas, rinkomės kokybiškas ir išliekamąją vertę turinčias medžiagas.",
+    "notes": [
+      {
+        "h": "Biožidinys",
+        "t": "Tikra liepsna, kuri skleidžia šilumą ir sukuria jaukumą. Labai lengva įrengti ir paprasta naudotis, tad vienintelis „trūkumas“, kad nėra traškančių malkų garso. Na, bet ir pačių malkų nereikia nešioti."
+      },
+      {
+        "h": "Virtuvės ir valgomojo zona",
+        "t": "Gaivi ir pavasariu dvelkianti erdvė, kurioje virtuvė ir valgomasis lieka viena visuma su svetaine."
+      }
+    ],
+    "quote": "Dėkoju klientams už pasitikėjimą ir džiaugiuosi tokiu nuostabiu rezultatu, kuriuo patys klientai džiaugiasi jau tris metus. O interjeras dar tikrai „nepaseno“!",
+    "partners": ["Hust Design", "Medžio stilius", "Biožidinys.lt", "ABC baldai"],
+    "images": [
+      [23, 0], [23, 1], [21, 0], [22, 0], [20, 0], [23, 2], [21, 1], [22, 1],
+      [20, 1], [21, 2], [22, 2], [23, 3], [21, 3], [20, 2], [22, 3], [21, 4],
+      [23, 4], [22, 4], [20, 3], [21, 5]
+    ]
+  },
+  {
+    "slug": "mazas-butas",
+    "title": "Mažas butas",
+    "lead": "Ne viskas turi būti balta",
+    "meta": "Butas · projektas ir realizacija",
+    "cover": [26, 0],
+    "anchor": 0.45,
+    "intro": "Kuriant interjerą mažai erdvei toli gražu nesivadovauju tik ta taisykle, kad „viskas turi būti balta“ ir „reikia daug veidrodžių“. Čia pastebėsite nemažai baltų sienų, tačiau nepabijojau ir tamsių, sodrių spalvų — kontrastui ir prabangos jausmui.",
+    "notes": [
+      {
+        "h": "Funkcionalumas — tikslas, ne priedas",
+        "t": "Talpi prieškambario spinta. Pufas-daiktadėžė ne tik atsisėdimui. Uždara spinta skalbyklei ir džiovyklei. Unitazo baldas su maksimaliu lentynėlių kiekiu. Ergonomiškas virtuvės baldas su pakankamu laisvo stalviršio plotu. Pietų stalas mažiausiai keturiems, jaukiai susiglaudus — šešiems. Lova su daiktadėže. Ir spinta, kurioje telpa net ir trejus metus neištraukti drabužiai."
+      },
+      {
+        "h": "„Nematomos“ durys",
+        "t": "Teisingiau jas vadinti priglaistomomis — stakta susiglaisto su siena ir vaizdas tampa vientisas. Renkantis šį tipą grindjuostės taip pat turi būti arba nematomos, arba užleistos ant durų varčių, kad gautumėte maksimalų efektą."
+      },
+      {
+        "h": "Kompaktiškas dušo kambarys",
+        "t": "Telpa ne tik pats dušas, bet ir didelis praustuvo baldas, WC spinta ir netgi skalbyklės-džiovyklės spinta. Prabangą čia kuria medžiagos: ąžuolo faneruotės baldai, kokybiškos akmens masės plytelės, chromo spalvos akcentai."
+      }
+    ],
+    "quote": "Tai taip paprastai — kad būtų ne tik gražu pažiūrėti, bet ir patogu gyventi.",
+    "partners": [],
+    "images": [
+      [26, 0], [26, 1], [32, 0], [26, 2], [33, 0], [30, 0], [26, 3], [33, 1],
+      [26, 4], [30, 1], [33, 2], [26, 5], [28, 0], [30, 2], [33, 3], [26, 6],
+      [28, 1], [30, 3], [33, 4], [26, 7], [26, 8], [28, 2]
+    ]
+  },
+  {
+    "slug": "azuolo-namai",
+    "title": "Ąžuolo namai",
+    "lead": "Namas, kuriame svarbiausias — rezultatas",
+    "meta": "Namas · pilnas įrengimas",
+    "cover": [37, 0],
+    "anchor": 0.45,
+    "intro": "Namo įrengimas yra tikrai nemažas iššūkis ir ilgas procesas, kurio metu būna visko. O po to „visko“ svarbiausias yra rezultatas.",
+    "notes": [
+      {
+        "h": "Chromo akcentai",
+        "t": "Subtilūs chromo akcentai interjere — nuo šviestuvų iki šalutinių staliukų — laiko visą namą viena kalba."
+      },
+      {
+        "h": "Ąžuolinės grindys ir durys",
+        "t": "Renkantis ąžuolines grindis visada rekomenduoju apgalvoti ir ąžuolinių durų pasirinkimą. Šukuotas paviršius duoda patvaresnį viršutinį sluoksnį, nes šukavimo metu pašalinama minkštoji medienos dalis."
+      }
+    ],
+    "quote": "Esu dėkinga, kad prisidėjau, ir dėkoju visiems prisidėjusiems partneriams.",
+    "partners": ["Medžio stilius", "Hust Design", "Ladnini", "IKS Forma", "Art de Vivre kilimai", "Minimalistas", "Impeka Home", "Norr11", "Prenta Studio", "Elica", "JUNG"],
+    "images": [
+      [37, 0], [37, 1], [37, 2], [34, 0], [42, 0], [38, 0], [37, 3], [37, 4],
+      [34, 1], [42, 1], [37, 5], [37, 6], [34, 2], [42, 2], [37, 7], [37, 8],
+      [34, 3], [42, 3], [37, 9], [37, 10], [42, 4], [37, 11]
+    ]
+  },
+  {
+    "slug": "juodi-akcentai",
+    "title": "Juodi akcentai",
+    "lead": "Minkštos formos, kontrastingos detalės",
+    "meta": "Namas · pilnas įrengimas",
+    "cover": [59, 0],
+    "anchor": 0.45,
+    "intro": "Minkštos formos ir šviesios spalvos sušildo kontrastingų juodų detalių akcentus.",
+    "notes": [
+      {
+        "h": "Prieškambaris su vieta prisėsti",
+        "t": "Didelė spinta, kurios centre suplanuota vieta patogiai prisėsti. Kitoje pusėje — komoda batams ir veidrodis su LED apšvietimu. Vėliau mus pasitinka laiptai į antrą aukštą su dar daugiau pakopose integruoto LED apšvietimo."
+      },
+      {
+        "h": "Ilgas ir siauras miegamasis",
+        "t": "Išplanavimas, kada drabužinė lieka už lovos — taip patalpa įgauna aiškias zonas ir nebeatrodo koridoriaus formos."
+      }
+    ],
+    "quote": "Kiekvieni namai ir yra istorija — nuo pirmos plytos, pirmos nakties ant ką tik išpakuoto čiužinio, pirmo omleto labai ankstyvą rytą, kai pro langus plieskia šviesa, nes dar nėra užuolaidų.",
+    "partners": [],
+    "images": [
+      [59, 0], [55, 0], [52, 0], [45, 0], [59, 1], [55, 1], [44, 0], [52, 1],
+      [45, 1], [59, 2], [55, 2], [52, 2], [45, 2], [59, 3], [55, 3], [52, 3],
+      [45, 3], [59, 4], [55, 4], [52, 4], [45, 4], [59, 5], [52, 5], [45, 5]
+    ]
+  },
+  {
+    "slug": "atostogu-namai",
+    "title": "Atostogų namai",
+    "lead": "Pajūryje, įkvėpti pačių atostogų",
+    "meta": "Butas · Lietuvos pajūris",
+    "cover": [64, 0],
+    "anchor": 0.45,
+    "intro": "Šviesus, minimalistinis, bet turintis „cinkelio“ projektas atostogoms pajūryje. Jaukūs smėlio tonai ir jūros spalvos akcentai dar labiau kuria atostogų namų nuotaiką.",
+    "notes": [
+      {
+        "h": "Dušas perkeltas per butą",
+        "t": "Šią dušo patalpą perkėlėme į kitą buto pusę, kad ji būtų erdvesnė ir turėtų dienos šviesos, sklindančios per langą. Be to, šis sprendimas atvėrė ir bendros gyvenamosios erdvės plotą — tad patalpoje, kurioje praleidžiama daugiausiai laiko, turime ir daugiausiai erdvės."
+      }
+    ],
+    "quote": "Atostogų namai, įkvėpti pačių atostogų.",
+    "partners": [],
+    "images": [
+      [64, 0], [62, 0], [66, 0], [65, 0], [64, 1], [63, 0], [62, 1], [66, 1],
+      [65, 1], [64, 2], [63, 1], [67, 0], [66, 2], [65, 2], [62, 2], [63, 2],
+      [67, 1]
+    ]
+  },
+  {
+    "slug": "beige-namai",
+    "title": "Beige namai",
+    "lead": "Šilta ir minkšta, tarsi kopų smėlyje",
+    "meta": "Butas · projektas ir realizacija",
+    "cover": [8, 0],
+    "anchor": 0.45,
+    "intro": "Odė beige namams, kuriuose visada šilta ir minkšta, tarsi kopų smėlyje.",
+    "notes": [
+      {
+        "h": "Miegamasis su dviem veidrodžiais",
+        "t": "Šį kartą planavome spintą su dviem veidrodiniais fasadais bei numatėme grožio stalelio vietą su dar vienu veidrodžiu. Veidrodžiai man labai patinka ne tik dėl visiems gerai žinomų savybių apie šviesos atspindėjimą bei erdvės pojūčio suteikimą."
+      }
+    ],
+    "quote": "Ramybė ir harmonija namuose.",
+    "partners": [],
+    "images": [
+      [8, 0], [8, 1], [9, 0], [31, 0], [8, 2], [9, 1], [31, 1], [8, 3],
+      [9, 2], [31, 2], [8, 4], [9, 3], [31, 3], [8, 5], [9, 4], [31, 4], [31, 5]
+    ]
+  }
+]

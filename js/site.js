@@ -64,6 +64,15 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* instagram strip: only animate while it is actually on screen */
+  var igw = document.querySelector('.igwrap'), igt = document.querySelector('.igtrack');
+  if (igw && igt && 'IntersectionObserver' in window) {
+    igt.style.animationPlayState = 'paused';
+    new IntersectionObserver(function (es) {
+      igt.style.animationPlayState = es[0].isIntersecting ? 'running' : 'paused';
+    }, { threshold: 0 }).observe(igw);
+  }
+
   /* contact form -> mailto compose + inline confirmation */
   var f = document.getElementById('cf');
   if (f) {

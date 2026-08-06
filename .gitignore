@@ -1,8 +1,13 @@
 fs-server.js
 assets/raw/
 assets/qa/
-assets/*.py
-assets/*.js
-assets/projects.json
-.DS_Store
 assets/img/
+.DS_Store
+
+# build scripts ARE committed (gen.py / fetch_ig.py / projects.json) so the
+# scheduled Instagram refresh can run in CI. Python files in a subfolder do
+# not change Vercel's framework detection — only a root server file would.
+assets/sheet.py
+assets/build_images.py
+assets/download.py
+assets/fitcheck-multi.js
