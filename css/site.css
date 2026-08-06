@@ -134,8 +134,13 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 .igmask::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
 /* a real scroll container, not a transformed track: the finger and the drift
    then share one mechanism instead of fighting each other */
-.igwrap{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;
-  -webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
+/* scroll-behavior MUST be auto here: html{scroll-behavior:smooth} is inherited,
+   which turns every per-frame scrollLeft write into a fresh smooth-scroll
+   request that cancels the previous one — the strip then stalls on mobile.
+   -webkit-overflow-scrolling:touch is also gone: it puts the container on its
+   own iOS scrolling layer where programmatic scrollLeft is unreliable. */
+.igwrap{overflow-x:auto;overflow-y:hidden;scroll-behavior:auto;
+  scrollbar-width:none;-ms-overflow-style:none;overscroll-behavior-x:contain}
 .igwrap::-webkit-scrollbar{display:none}
 .igtrack{display:flex;gap:20px;width:max-content}
 

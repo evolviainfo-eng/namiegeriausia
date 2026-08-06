@@ -108,15 +108,24 @@
     if (igw && igtrack && !reduce) {
       var SPEED = 0.35;                                   // px per frame at 60fps
       var hover = false, held = false, visible = false, raf = 0;
+      // Own the position as a float. Mobile Safari rounds scrollLeft to whole
+      // pixels, so `scrollLeft += 0.35` read back unchanged and the strip never
+      // moved at all. Accumulating here and assigning keeps sub-pixel speed.
+      var pos = igw.scrollLeft;
 
       function frame() {
         raf = 0;
         if (!visible) return;
-        if (!hover && !held) igw.scrollLeft += SPEED;
         var h = igtrack.scrollWidth / 2;                   // one full copy
-        if (h > 0) {                                       // seamless both ways
-          if (igw.scrollLeft >= h) igw.scrollLeft -= h;
-          else if (igw.scrollLeft <= 0) igw.scrollLeft += h;
+        if (hover || held) {
+          pos = igw.scrollLeft;                            // user leads, we follow
+        } else {
+          pos += SPEED;
+          if (h > 0) {                                     // seamless both ways
+            if (pos >= h) pos -= h;
+            else if (pos < 0) pos += h;
+          }
+          igw.scrollLeft = pos;
         }
         raf = requestAnimationFrame(frame);
       }
