@@ -11,3 +11,6 @@ assets/sheet.py
 assets/build_images.py
 assets/download.py
 assets/fitcheck-multi.js
+
+# workflow laukia `workflow` scope — kopija: assets/ci/instagram.yml
+.github/

@@ -132,28 +132,45 @@ html.js.is-on .hero .hsub,html.js.is-on .hero .hcta{opacity:1;transition:opacity
 .igwrap::before,.igwrap::after{content:"";position:absolute;top:0;bottom:0;width:88px;z-index:2;pointer-events:none}
 .igwrap::before{left:0;background:linear-gradient(to right,var(--paper),transparent)}
 .igwrap::after{right:0;background:linear-gradient(to left,var(--paper),transparent)}
-.igtrack{display:flex;gap:12px;width:max-content;animation:igdrift 90s linear infinite}
-.igwrap:hover .igtrack,.igwrap:focus-within .igtrack{animation-play-state:paused}
+.igtrack{display:flex;gap:20px;width:max-content;animation:igdrift 120s linear infinite}
+/* pause purely through stylesheet rules — an inline style would out-rank :hover */
+.igwrap:hover .igtrack,.igwrap:focus-within .igtrack,
+.igs.paused .igtrack{animation-play-state:paused}
 @keyframes igdrift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-.igt{position:relative;flex:0 0 auto;width:200px;aspect-ratio:1;overflow:hidden;background:var(--surface)}
-.igt img{width:100%;height:100%;object-fit:cover;transition:transform 650ms var(--big),opacity var(--t1) var(--ui)}
-.igt:hover img,.igt:focus-visible img{transform:scale(1.05);opacity:.9}
-.igv{position:absolute;right:10px;top:10px;width:0;height:0;
-  border-left:9px solid rgba(255,255,255,.95);border-top:6px solid transparent;border-bottom:6px solid transparent;
-  filter:drop-shadow(0 1px 2px rgba(0,0,0,.4))}
+
+.igt{position:relative;flex:0 0 auto;width:300px;display:flex;flex-direction:column;
+  background:var(--paper);border:1px solid var(--line-soft)}
+.igim{position:relative;display:block;aspect-ratio:1;overflow:hidden;background:var(--surface) center/cover}
+.igim.ok{background-image:none!important}          /* real image painted — drop the blur */
+.igt img{width:100%;height:100%;object-fit:cover;opacity:0;
+  transition:transform 700ms var(--big),opacity 420ms linear}
+.igt img.ok{opacity:1}
+.igt:hover img,.igt:focus-visible img{transform:scale(1.05)}
+.igb{padding:14px 16px 16px;display:flex;flex-direction:column;gap:9px}
+.igacts{display:flex;gap:14px;color:var(--ink)}
+.igacts svg{width:21px;height:21px;display:block}
+.igt:hover .igacts svg:first-child{color:#C2564B;transition:color var(--t1) var(--ui)}
+.igcap{font-size:var(--s0);line-height:1.5;color:var(--ink);
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.igdate{font-size:13px;color:var(--muted)}
+.igv{position:absolute;right:12px;top:12px;width:0;height:0;
+  border-left:10px solid rgba(255,255,255,.95);border-top:7px solid transparent;border-bottom:7px solid transparent;
+  filter:drop-shadow(0 1px 3px rgba(0,0,0,.45))}
 @media (max-width:640px){
-  .igt{width:44vw}
+  .igt{width:78vw}
   .igh{margin-bottom:22px}
-  .igwrap::before,.igwrap::after{width:32px}
-  /* on touch the drift gets in the way — let people swipe instead */
-  .igwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .igwrap::before,.igwrap::after{width:24px}
+  /* on touch the drift fights the finger — let people swipe instead */
+  .igwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+    scroll-snap-type:x mandatory;padding-inline:var(--pad)}
   .igwrap::-webkit-scrollbar{display:none}
-  .igtrack{animation:none}
+  .igtrack{animation:none;width:auto;padding-right:var(--pad)}
+  .igt{scroll-snap-align:center}
   .igtrack .igt[aria-hidden="true"]{display:none}
 }
 @media (prefers-reduced-motion:reduce){
   .igwrap{overflow-x:auto}
-  .igtrack{animation:none}
+  .igtrack{animation:none;width:auto}
   .igtrack .igt[aria-hidden="true"]{display:none}
 }
 

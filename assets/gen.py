@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """Generate index + project pages for NAMIE geriausia."""
-import json, os, glob
+import json, os, glob, datetime
+from html import escape
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 P = json.load(open(os.path.join(ROOT, 'assets/projects.json')))
@@ -332,15 +333,40 @@ def ig_strip():
     if not posts:
         return ''
 
+    MON = ['sausio', 'vasario', 'kovo', 'balandžio', 'gegužės', 'birželio', 'liepos',
+           'rugpjūčio', 'rugsėjo', 'spalio', 'lapkričio', 'gruodžio']
+
+    HEART = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+             '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8l1 1.1L12 21l7.8-7.5 1-1.1a5.5 5.5 0 0 0 0-7.8z"/></svg>')
+    BUBBLE = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+              'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+              '<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.5-.7L3 21l1.9-5a8.1 8.1 0 0 1-.9-4.5 8.4 8.4 0 0 1 8.5-8 8.4 8.4 0 0 1 8.5 8z"/></svg>')
+    SEND = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" '
+            'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            '<path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>')
+
     def tile(p):
         vid = '<span class="igv" aria-hidden="true"></span>' if p.get('video') else ''
-        return (f'<a class="igt" href="{p["url"]}" target="_blank" rel="noopener noreferrer">'
-                f'<img src="/img/ig-{p["code"]}-320.webp" '
-                f'srcset="/img/ig-{p["code"]}-320.webp 320w, /img/ig-{p["code"]}-560.webp 560w" '
-                f'sizes="(max-width:640px) 42vw, 200px" alt="{p["alt"]}" '
-                f'loading="lazy" decoding="async" width="560" height="560" '
-                f'style="background-image:url(data:image/webp;base64,{p["blur"]});'
-                f'background-size:cover">{vid}</a>')
+        d = datetime.datetime.utcfromtimestamp(p['ts']) if p.get('ts') else None
+        date = f'{MON[d.month - 1]} {d.day} d.' if d else ''
+        cap = escape(p.get('caption', ''))
+        alt = cap[:110] if cap else 'Įrašas iš studijos kasdienybės'
+        return (f'<a class="igt" href="{p["url"]}" target="_blank" rel="noopener noreferrer" '
+                f'aria-label="Žiūrėti įrašą Instagrame: {alt}">'
+                f'<span class="igim" style="background-image:url(data:image/webp;base64,{p["blur"]})">'
+                # One fixed source, no srcset: with srcset the duplicate track
+                # resolved to different variants and several tiles never picked a
+                # source at all, drifting in as blur mush. 640px covers 300px @2x
+                # and the duplicate tiles are pure cache hits. Not lazy either —
+                # native lazy-loading does not fire for a transform-driven track.
+                f'<img src="/img/ig-{p["code"]}-640.webp" alt="{alt}" '
+                f'decoding="async" width="640" height="640">{vid}</span>'
+                f'<span class="igb">'
+                f'<span class="igacts" aria-hidden="true">{HEART}{BUBBLE}{SEND}</span>'
+                f'<span class="igcap">{cap}</span>'
+                f'<span class="igdate">{date}</span>'
+                f'</span></a>')
 
     tiles = ''.join(tile(p) for p in posts)
     # the track is duplicated so the drift can loop seamlessly; the copy is

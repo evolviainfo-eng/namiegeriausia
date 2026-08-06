@@ -64,13 +64,47 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* instagram strip: only animate while it is actually on screen */
-  var igw = document.querySelector('.igwrap'), igt = document.querySelector('.igtrack');
-  if (igw && igt && 'IntersectionObserver' in window) {
-    igt.style.animationPlayState = 'paused';
-    new IntersectionObserver(function (es) {
-      igt.style.animationPlayState = es[0].isIntersecting ? 'running' : 'paused';
-    }, { threshold: 0 }).observe(igw);
+  /* ---- instagram strip ---- */
+  var igs = document.querySelector('.igs');
+  if (igs) {
+    // pause off-screen via a CLASS, so :hover in the stylesheet still wins
+    var igw = igs.querySelector('.igwrap');
+    if (igw && 'IntersectionObserver' in window) {
+      igs.classList.add('paused');
+      new IntersectionObserver(function (es) {
+        igs.classList.toggle('paused', !es[0].isIntersecting);
+      }, { threshold: 0 }).observe(igw);
+    }
+    var tileImgs = [].slice.call(igs.querySelectorAll('.igt img'));
+
+    // fade each tile in and drop its blur placeholder the moment it paints,
+    // otherwise a slow tile sits there as a smear of 24px mush
+    tileImgs.forEach(function (im) {
+      function ok() { im.classList.add('ok'); im.parentNode.classList.add('ok'); }
+      if (im.complete && im.naturalWidth > 0) ok();
+      else {
+        im.addEventListener('load', ok, { once: true });
+        im.addEventListener('error', ok, { once: true });   // never leave mush on screen
+      }
+    });
+
+    // The strip sits at the bottom of a very long page, so Chrome defers its
+    // images even without loading="lazy" — tiles then drifted in as blur.
+    // Warm all 12 URLs as soon as the strip is anywhere near the viewport.
+    if ('IntersectionObserver' in window) {
+      var warm = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        warm.disconnect();
+        var seen = {};
+        tileImgs.forEach(function (im) {
+          if (seen[im.src]) return;
+          seen[im.src] = 1;
+          if (im.fetchPriority !== undefined) im.fetchPriority = 'high';
+          new Image().src = im.src;
+        });
+      }, { rootMargin: '900px 0px' });
+      warm.observe(igs);
+    }
   }
 
   /* contact form -> mailto compose + inline confirmation */
