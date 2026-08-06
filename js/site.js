@@ -101,26 +101,20 @@
     }
 
     /* ---- the drift ----
-       Driven by scrollLeft, so touch, trackpad and the drift all use the same
-       mechanism — the strip moves on phones too and a finger never fights it.
-       Hovering does not stop it: the pointer's horizontal position steers the
-       direction instead, left half back, right half forward. No arrows, dots
-       or counters — the strip itself is the control. */
+       Driven by scrollLeft rather than a CSS transform, so the finger, the
+       trackpad and the drift all share one mechanism — that is what lets the
+       strip move on phones too without fighting a swipe.
+       Constant speed, one direction. Hovering pauses it; nothing else steers. */
     if (igw && igtrack && !reduce) {
-      var BASE = 0.35, SWING = 3.1;     // px per frame at 60fps
-      var vel = BASE, target = BASE, held = false, visible = false, raf = 0;
-
-      function half() { return igtrack.scrollWidth / 2; }   // one full copy
+      var SPEED = 0.35;                                   // px per frame at 60fps
+      var hover = false, held = false, visible = false, raf = 0;
 
       function frame() {
         raf = 0;
         if (!visible) return;
-        if (!held) {
-          vel += (target - vel) * 0.06;                     // ease, never snap
-          igw.scrollLeft += vel;
-        }
-        var h = half();
-        if (h > 0) {                                        // seamless both ways
+        if (!hover && !held) igw.scrollLeft += SPEED;
+        var h = igtrack.scrollWidth / 2;                   // one full copy
+        if (h > 0) {                                       // seamless both ways
           if (igw.scrollLeft >= h) igw.scrollLeft -= h;
           else if (igw.scrollLeft <= 0) igw.scrollLeft += h;
         }
@@ -128,27 +122,23 @@
       }
       function run() { if (!raf && visible) raf = requestAnimationFrame(frame); }
 
-      igw.addEventListener('pointermove', function (e) {
-        if (e.pointerType === 'touch') return;              // let the finger lead
-        var r = igw.getBoundingClientRect();
-        var p = (e.clientX - r.left) / r.width;             // 0 left … 1 right
-        target = BASE + (Math.min(1, Math.max(0, p)) - 0.5) * 2 * SWING;
+      // hover only exists on pointing devices — phones never set this
+      igw.addEventListener('pointerenter', function (e) {
+        if (e.pointerType !== 'touch') hover = true;
       });
-      igw.addEventListener('pointerleave', function () { target = BASE; });
+      igw.addEventListener('pointerleave', function () { hover = false; });
 
       // while a finger or trackpad is actually dragging, stand down completely
       ['pointerdown', 'touchstart'].forEach(function (t) {
         igw.addEventListener(t, function () { held = true; }, { passive: true });
       });
       ['pointerup', 'pointercancel', 'touchend', 'touchcancel'].forEach(function (t) {
-        igw.addEventListener(t, function () {
-          held = false; target = BASE;
-        }, { passive: true });
+        igw.addEventListener(t, function () { held = false; }, { passive: true });
       });
 
       if ('IntersectionObserver' in window) {
         new IntersectionObserver(function (es) {
-          visible = es[0].isIntersecting;                   // no work off-screen
+          visible = es[0].isIntersecting;                  // no work off-screen
           run();
         }, { threshold: 0 }).observe(igw);
       } else { visible = true; run(); }
