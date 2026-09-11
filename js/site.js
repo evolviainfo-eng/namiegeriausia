@@ -1,4 +1,4 @@
-/* NAMIE geriausia — minimal runtime */
+/* NAMIE geriausia · minimal runtime */
 (function () {
   var de = document.documentElement;
   de.classList.add('js');
@@ -11,7 +11,7 @@
   setTimeout(on, 2500);
 
   /* ---- section arrival: heading masked-line lift + lead fade, once ----
-     One idiom, one curve. Headings only — body copy is never split.
+     One idiom, one curve. Headings only; body copy is never split.
      Hidden state lives under html.js, so no-JS renders everything visible. */
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var targets = [].slice.call(document.querySelectorAll('.sec h2, .mani blockquote, .phead h1'));
@@ -37,7 +37,7 @@
       entries.forEach(function (en) {
         if (!en.isIntersecting) return;
         show(en.target);
-        io.unobserve(en.target);          // once — never replays
+        io.unobserve(en.target);          // once, never replays
       });
     }, { rootMargin: '0px 0px -12% 0px', threshold: 0.01 });
     targets.forEach(function (el) { io.observe(el); });
@@ -54,7 +54,7 @@
     document.addEventListener('visibilitychange', function () {
       if (!document.hidden) sweep();
     });
-    // absolute last resort — never leave the page with hidden text
+    // absolute last resort: never leave the page with hidden text
     setTimeout(function () { targets.forEach(show); }, 10000);
   }
 
@@ -83,7 +83,7 @@
     });
 
     // The strip sits at the bottom of a very long page, so Chrome defers its
-    // images even without loading="lazy" — tiles then drifted in as blur.
+    // images even without loading="lazy", so tiles drifted in as blur.
     // Warm all 12 URLs as soon as the strip is anywhere near the viewport.
     if ('IntersectionObserver' in window) {
       var warm = new IntersectionObserver(function (es) {
@@ -134,6 +134,134 @@
     }
   }
 
+
+  /* ---- lightbox: project photography only ----
+     Bound to .pgal, which is the project gallery and nothing else, so the
+     Instagram tiles keep opening Instagram and are never pulled in here. */
+  var lbGal = [].slice.call(document.querySelectorAll('.pgal figure img'));
+  if (lbGal.length) {
+    function lbIcon(d) {
+      return '<lbIcon viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" ' +
+             'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+             '<path d="' + d + '"/></lbIcon>';
+    }
+
+    var lb = document.createElement('div');
+    lb.className = 'lb';
+    lb.hidden = true;
+    lb.setAttribute('role', 'dialog');
+    lb.setAttribute('aria-modal', 'true');
+    lb.setAttribute('aria-label', 'Projekto nuotrauka');
+    lb.innerHTML =
+      '<figure class="lb-fig"><img class="lb-img" alt="">' +
+      '<figcaption class="lb-cap"></figcaption></figure>' +
+      '<button class="lb-prev" type="button" aria-label="Ankstesnė nuotrauka">' +
+        lbIcon('M15 5 8 12l7 7') + '</button>' +
+      '<button class="lb-next" type="button" aria-label="Kita nuotrauka">' +
+        lbIcon('M9 5l7 7-7 7') + '</button>' +
+      '<button class="lb-x" type="button" aria-label="Uždaryti">' +
+        lbIcon('M6 6l12 12M18 6L6 18') + '</button>';
+    document.body.appendChild(lb);
+
+    var lbImg = lb.querySelector('.lb-img'),
+        lbCap = lb.querySelector('.lb-cap'),
+        bPrev = lb.querySelector('.lb-prev'),
+        bNext = lb.querySelector('.lb-next'),
+        bX = lb.querySelector('.lb-x'),
+        lbIdx = 0, opener = null;
+
+    // the lbLargest file the srcset offers, so full screen is never an upscale of
+    // whatever variant the grid happened to pick
+    function lbLargest(img) {
+      var best = img.currentSrc || img.src, w = 0;
+      (img.getAttribute('srcset') || '').split(',').forEach(function (part) {
+        var m = part.trim().match(/^(\S+)\s+(\d+)w$/);
+        if (m && +m[2] > w) { w = +m[2]; best = m[1]; }
+      });
+      return best;
+    }
+
+    function lbWarm(i) {
+      var n = lbGal[(i + lbGal.length) % lbGal.length];
+      if (n) { new Image().src = lbLargest(n); }
+    }
+
+    function lbShow(i) {
+      lbIdx = (i + lbGal.length) % lbGal.length;
+      var from = lbGal[lbIdx];
+      lbImg.src = lbLargest(from);
+      lbImg.alt = from.alt || '';
+      lbCap.textContent = from.alt || '';
+      lbWarm(lbIdx + 1); lbWarm(lbIdx - 1);          // next swipe is already in cache
+    }
+
+    function lbOpen(i, trigger) {
+      opener = trigger || null;
+      lbShow(i);
+      lb.hidden = false;
+      void lb.offsetHeight;                  // give the fade a start value to run from
+      lb.classList.add('on');
+      de.classList.add('lb-lbOpen');
+      bX.focus();
+    }
+
+    function lbClose() {
+      lb.classList.remove('on');
+      de.classList.remove('lb-lbOpen');
+      var done = function () { lb.hidden = true; lbImg.removeAttribute('src'); };
+      if (reduce) { done(); } else { setTimeout(done, 240); }
+      if (opener) { opener.focus(); }
+    }
+
+    lbGal.forEach(function (img, i) {
+      img.setAttribute('role', 'button');
+      img.setAttribute('tabindex', '0');
+      img.setAttribute('aria-label', (img.alt || 'Nuotrauka') + ', atidaryti per visą ekraną');
+      img.addEventListener('click', function () { lbOpen(i, img); });
+      img.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); lbOpen(i, img); }
+      });
+    });
+
+    bPrev.addEventListener('click', function () { lbShow(lbIdx - 1); });
+    bNext.addEventListener('click', function () { lbShow(lbIdx + 1); });
+    bX.addEventListener('click', lbClose);
+
+    // a click on the ground closes; the photo, its caption and the controls do not
+    lb.addEventListener('click', function (e) {
+      if (!e.target.closest('.lb-fig, button')) { lbClose(); }
+    });
+
+    document.addEventListener('keydown', function (e) {
+      if (lb.hidden) return;
+      if (e.key === 'Escape') { lbClose(); }
+      else if (e.key === 'ArrowLeft') { lbShow(lbIdx - 1); }
+      else if (e.key === 'ArrowRight') { lbShow(lbIdx + 1); }
+      else if (e.key === 'Tab') {
+        // hold focus inside the dialog while it is lbOpen
+        var f = [bPrev, bNext, bX].filter(function (b) { return b.offsetParent !== null; });
+        var at = f.indexOf(document.activeElement);
+        e.preventDefault();
+        f[(at + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+      }
+    });
+
+    var sx = 0, sy = 0, swiping = false;
+    lb.addEventListener('touchstart', function (e) {
+      swiping = e.touches.length === 1;
+      if (swiping) { sx = e.touches[0].clientX; sy = e.touches[0].clientY; }
+    }, { passive: true });
+    lb.addEventListener('touchend', function (e) {
+      if (!swiping) return;
+      swiping = false;
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      // horizontal intent only, so a vertical flick never flips the photo
+      if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+        lbShow(lbIdx + (dx < 0 ? 1 : -1));
+      }
+    }, { passive: true });
+  }
+
   /* contact form -> mailto compose + inline confirmation */
   var f = document.getElementById('cf');
   if (f) {
@@ -145,7 +273,7 @@
         '?subject=' + encodeURIComponent('Užklausa dėl interjero projekto') +
         '&body=' + encodeURIComponent(body);
       var m = document.getElementById('cf-note');
-      if (m) m.textContent = 'Atsidarys jūsų pašto programa. Jei neatsidarė — parašykite brigita@namiegeriausia.lt arba skambinkite +370 680 20901.';
+      if (m) m.textContent = 'Atsidarys jūsų pašto programa. Jei neatsidarė, parašykite brigita@namiegeriausia.lt arba skambinkite +370 680 20901.';
       window.location.href = url;
     });
   }

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Refresh the Instagram strip from the public profile endpoint.
 
-No OAuth, no Meta app, no client involvement — the public web endpoint
+No OAuth, no Meta app, no client involvement: the public web endpoint
 answers with just an app-id header and a real User-Agent.
 
 Fails safe: on any error it leaves data/ig-feed.json and img/ig-* untouched,
@@ -14,6 +14,8 @@ USER = 'namiegeriausia'
 COUNT = 12
 OUT_JSON = os.path.join(ROOT, 'data/ig-feed.json')
 IMG_DIR = os.path.join(ROOT, 'img')
+RAW_DIR = os.path.join(ROOT, 'assets/raw/ig-strip')
+WIDTHS = (640, 900)          # a tile renders at 340px, 72vw on a phone
 UA = ('Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 '
       '(KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36')
 HDRS = {'x-ig-app-id': '936619743392459', 'User-Agent': UA,
@@ -21,7 +23,7 @@ HDRS = {'x-ig-app-id': '936619743392459', 'User-Agent': UA,
 
 
 def clean_caption(node, limit=150):
-    """Her own words, minus the hashtag tail — a wall of #interjerodizainas
+    """Her own words, minus the hashtag tail. A wall of #interjerodizainas
     reads as spam on the site even though it belongs on Instagram."""
     e = node.get('edge_media_to_caption', {}).get('edges', [])
     if not e:
@@ -54,15 +56,15 @@ def main():
     try:
         u = fetch_profile()
     except Exception as e:
-        print(f'IG fetch failed ({e}) — keeping existing feed', file=sys.stderr)
+        print(f'IG fetch failed ({e}), keeping existing feed', file=sys.stderr)
         return 0                      # fail safe: never break the build
 
     edges = u['edge_owner_to_timeline_media']['edges'][:COUNT]
     if not edges:
-        print('IG returned no posts — keeping existing feed', file=sys.stderr)
+        print('IG returned no posts, keeping existing feed', file=sys.stderr)
         return 0
 
-    from PIL import Image
+    from PIL import Image, ImageFilter
     os.makedirs(IMG_DIR, exist_ok=True)
     os.makedirs(os.path.dirname(OUT_JSON), exist_ok=True)
 
@@ -73,33 +75,48 @@ def main():
         except Exception:
             old = {}
 
+    os.makedirs(RAW_DIR, exist_ok=True)
     posts, fetched = [], 0
     for e in edges:
         n = e['node']
         code = n['shortcode']
         name = f'ig-{code}'
-        dest = os.path.join(IMG_DIR, f'{name}-640.webp')
+        dest = os.path.join(IMG_DIR, f'{name}-{WIDTHS[-1]}.webp')
 
         if not os.path.exists(dest):                 # only pull what's new
+            # display_resources carries larger candidates than display_url on
+            # most posts; take the biggest one on offer
+            url = n['display_url']
+            res = n.get('display_resources') or []
+            if res:
+                url = max(res, key=lambda r: r.get('config_width', 0))['src']
             try:
-                raw = get(n['display_url'], headers={'User-Agent': UA}, timeout=45)
+                raw = get(url, headers={'User-Agent': UA}, timeout=45)
             except Exception as ex:
                 print(f'  skip {code}: {ex}', file=sys.stderr)
                 if code in old:
                     posts.append(old[code])
                 continue
+            # keep the original: assets/build_ig.py re-cuts the tiles from a 4x
+            # master when it runs on a machine that has the model
+            open(os.path.join(RAW_DIR, f'{code}.jpg'), 'wb').write(raw)
             im = Image.open(io.BytesIO(raw)).convert('RGB')
             w, h = im.size                            # centre square crop
             s = min(w, h)
             im = im.crop(((w - s) // 2, (h - s) // 2, (w - s) // 2 + s, (h - s) // 2 + s))
-            for W in (640,):
-                im.resize((W, W), Image.LANCZOS).save(
-                    os.path.join(IMG_DIR, f'{name}-{W}.webp'), 'WEBP', quality=82, method=6)
+            for W in WIDTHS:
+                if W > s:                             # never upscale into a rung
+                    continue
+                r = im.resize((W, W), Image.LANCZOS)
+                r = r.filter(ImageFilter.UnsharpMask(radius=1.1, percent=45, threshold=2))
+                r.save(os.path.join(IMG_DIR, f'{name}-{W}.webp'), 'WEBP', quality=88, method=6)
             fetched += 1
 
         # inline blur-up so a tile is never an empty square; sits on the tile,
         # not the <img>, and JS clears it the moment the real image paints
-        with Image.open(os.path.join(IMG_DIR, f'{name}-640.webp')) as t:
+        first = next(p for p in (os.path.join(IMG_DIR, f'{name}-{W}.webp') for W in WIDTHS)
+                     if os.path.exists(p))
+        with Image.open(first) as t:
             b = io.BytesIO()
             t.convert('RGB').resize((24, 24), Image.LANCZOS).save(b, 'WEBP', quality=45, method=6)
             blur = base64.b64encode(b.getvalue()).decode()
@@ -114,7 +131,7 @@ def main():
         })
 
     if not posts:
-        print('nothing usable — keeping existing feed', file=sys.stderr)
+        print('nothing usable, keeping existing feed', file=sys.stderr)
         return 0
 
     json.dump({'handle': USER, 'posts': posts},

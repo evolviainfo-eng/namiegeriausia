@@ -14,3 +14,13 @@ assets/fitcheck-multi.js
 
 # workflow laukia `workflow` scope — kopija: assets/ci/instagram.yml
 .github/
+
+# Real-ESRGAN 4x masters (7 GB, regenerable: python3 assets/sr_mps.py)
+assets/sr/
+
+# Real-ESRGAN masters and the local-only tooling that makes them (needs torch).
+# assets/build_ig.py IS committed: it degrades to a plain downscale without SR.
+assets/sr-ig/
+assets/sr_mps.py
+assets/sr_fix.py
+assets/used_sources.txt

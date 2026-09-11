@@ -31,7 +31,7 @@ def dims(name):
 
 _lqip_cache = {}
 def lqip(name):
-    """20px-wide inline webp — blur-up placeholder painted as the img background."""
+    """20px-wide inline webp: blur-up placeholder painted as the img background."""
     if name not in _lqip_cache:
         ws = widths_for(name)
         with _Im.open(os.path.join(ROOT, f'img/{name}-{ws[0]}.webp')) as im:
@@ -83,7 +83,7 @@ HEAD = '''<!DOCTYPE html>
 <a class="skip" href="#turinys">Pereiti prie turinio</a>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="/" aria-label="NAMIE geriausia — į pradžią">
+    <a class="brand" href="/" aria-label="NAMIE geriausia, į pradžią">
       <img class="mk" src="/img/logo-mark.png" alt="" width="354" height="347">
       <span class="bw">
         <img src="/img/word-namie.png" alt="NAMIE" width="808" height="116">
@@ -145,13 +145,13 @@ biz_schema = '''<script type="application/ld+json">
 
 faq_items = [
     ("Nuo ko viskas prasideda?",
-     "Nuo konsultacijos — ji gali vykti ir objekte. Analizuojame erdvės architektūrą bei inžineriją, o svarbiausia — susipažįstame: gerai suprasti klientą ne mažiau svarbu nei suprasti patalpas."),
+     "Nuo konsultacijos. Ji gali vykti ir objekte. Analizuojame erdvės architektūrą bei inžineriją, o svarbiausia, susipažįstame: gerai suprasti klientą ne mažiau svarbu nei suprasti patalpas."),
     ("Kas įeina į techninį projektą?",
-     "Dešimt brėžinių grupių: nuo pertvarų ir durų angų plano iki plytelių klijavimo išklotinių. Pagal juos dirba apdailos meistrai ir baldininkai — visas sąrašas pateiktas paslaugų skiltyje."),
+     "Dešimt brėžinių grupių: nuo pertvarų ir durų angų plano iki plytelių klijavimo išklotinių. Pagal juos dirba apdailos meistrai ir baldininkai. Visas sąrašas pateiktas paslaugų skiltyje."),
     ("Kiek užtrunka parengti projektą?",
-     "Techninių brėžinių paketas „Start“ parengiamas per 2–3 savaites. Pilno projekto su vizualizacijomis terminas priklauso nuo būsto ploto ir sprendimų apimties — jį aptariame konsultacijos metu."),
+     "Techninių brėžinių paketas „Start“ parengiamas per 2–3 savaites. Pilno projekto su vizualizacijomis terminas priklauso nuo būsto ploto ir sprendimų apimties. Jį aptariame konsultacijos metu."),
     ("Ar padedate ir įrengiant?",
-     "Taip — tai mūsų stiprybė. Autorinė priežiūra ir pilnas įrengimas: procesų valdymas, medžiagų užsakymas laiku, baldų gamybos organizavimas, atsakymai į meistrų klausimus ir netikėtų situacijų sprendimas iki pat raktų."),
+     "Taip, tai mūsų stiprybė. Autorinė priežiūra ir pilnas įrengimas: procesų valdymas, medžiagų užsakymas laiku, baldų gamybos organizavimas, atsakymai į meistrų klausimus ir netikėtų situacijų sprendimas iki pat raktų."),
 ]
 faq_schema = json.dumps({
     "@context": "https://schema.org", "@type": "FAQPage",
@@ -177,8 +177,8 @@ def index_html():
     cards = []
     for n, p in enumerate(P):
         s = p['slug']
-        cards.append(f'''<a class="pcard" href="/projektai/{s}/" aria-label="{p['title']} — atidaryti projekto puslapį">
-  <figure>{img_tag('cover-' + s, p['title'] + ' — įgyvendinto interjero fragmentas', '(max-width:760px) 92vw, 46vw', lazy=(n > 1))}</figure>
+        cards.append(f'''<a class="pcard" href="/projektai/{s}/" aria-label="{p['title']}, atidaryti projekto puslapį">
+  <figure>{img_tag('cover-' + s, p['title'] + ', įgyvendinto interjero fragmentas', '(max-width:760px) 92vw, 46vw', lazy=(n > 1))}</figure>
   <span class="cap"><span><span class="pt">{p['title']}</span><br><span class="pm">{covers_meta[s]}</span></span><span class="go">Žiūrėti projektą →</span></span>
 </a>''')
     cards = '\n'.join(cards)
@@ -191,18 +191,18 @@ def index_html():
   </picture>
   <div class="hc wrap">
     <h1><span class="hl"><span>Nuo idėjos iki</span></span><span class="hl"><span>įrengtų namų.</span></span></h1>
-    <p class="hsub">Interjero dizaino studija Vilniuje. Projektavimas, vizualizacijos, autorinė priežiūra ir pilnas įrengimas — viskas vienose rankose.</p>
+    <p class="hsub">Interjero dizaino studija Vilniuje. Projektavimas, vizualizacijos, autorinė priežiūra ir pilnas įrengimas. Viskas vienose rankose.</p>
     <div class="hcta">
       <a class="btn" href="#kontaktai">Užsakyti konsultaciją</a>
       <a class="tlink" href="#projektai" style="color:var(--paper)">Žiūrėti projektus</a>
     </div>
   </div>
-  <p class="hloc">Miško namai — Vilnius<br>įgyvendintas projektas</p>
+  <p class="hloc">Miško namai · Vilnius<br>įgyvendintas projektas</p>
 </section>'''
 
     mani = '''<section class="mani" aria-label="Studijos filosofija">
   <div class="wrap mg"><figure class="mq">
-    <blockquote><p>„Prabanga — tai ne marmurinės plytelės ar auksinės rankenėlės. Tai kokybiškai apgalvoti sprendimai, kurie suteikia visapusišką komfortą. Įsiklausymas, supratimas ir tinkamiausio sprendimo atradimas. Prabanga — tai jausmas, kai sugrįžus supranti: visur gerai, bet <strong>NAMIE GERIAUSIA</strong>.“</p></blockquote>
+    <blockquote><p>„Prabanga – tai ne marmurinės plytelės ar auksinės rankenėlės. Tai kokybiškai apgalvoti sprendimai, kurie suteikia visapusišką komfortą. Įsiklausymas, supratimas ir tinkamiausio sprendimo atradimas. Prabanga – tai jausmas, kai sugrįžus supranti: visur gerai, bet <strong>NAMIE GERIAUSIA</strong>.“</p></blockquote>
     <figcaption>Brigita Dikevičė, studijos įkūrėja</figcaption>
   </figure></div>
 </section>'''
@@ -217,17 +217,17 @@ def index_html():
     serv = '''<section class="sec" id="paslaugos">
   <div class="wrap">
     <h2>Viskas vienose rankose</h2>
-    <p class="ssub">Interjero dizaineris nėra tik gražių daiktų ir spalvų parinkėjas — tai procesas, kuriame kūryba kasdien susitinka su techninėmis žiniomis, vadyba ir dėmesiu detalėms.</p>
+    <p class="ssub">Interjero dizaineris nėra tik gražių daiktų ir spalvų parinkėjas. Tai procesas, kuriame kūryba kasdien susitinka su techninėmis žiniomis, vadyba ir dėmesiu detalėms.</p>
     <div class="serv">
-      <div class="srow"><h3>Interjero projektavimas</h3><p>Analizė ir pažinimas, išplanavimas, techniniai brėžiniai. Svarbi kiekviena detalė — nuo sienos atspalvio ir grindų krypties iki jungiklio vietos ir kelių milimetrų baldo brėžinyje.</p></div>
+      <div class="srow"><h3>Interjero projektavimas</h3><p>Analizė ir pažinimas, išplanavimas, techniniai brėžiniai. Svarbi kiekviena detalė: nuo sienos atspalvio ir grindų krypties iki jungiklio vietos ir kelių milimetrų baldo brėžinyje.</p></div>
       <div class="srow"><h3>3D vizualizacijos</h3><p>Fotorealistiški erdvių vaizdai, kuriais patikrinami sprendimai dar prieš perkant medžiagas. Ne kartą rezultatas pranoksta vizualizaciją.</p></div>
-      <div class="srow"><h3>Autorinė priežiūra</h3><p>Lankomės objekte, atsakome į meistrų klausimus, laiku užsakome apdailos medžiagas ir sprendžiame netikėtas situacijas — kad „ne, negaliu“ virstų „gerai, padarom“.</p></div>
+      <div class="srow"><h3>Autorinė priežiūra</h3><p>Lankomės objekte, atsakome į meistrų klausimus, laiku užsakome apdailos medžiagas ir sprendžiame netikėtas situacijas, kad „ne, negaliu“ virstų „gerai, padarom“.</p></div>
       <div class="srow"><h3>Pilnas įrengimas</h3><p>Nuo projekto iki raktų: apdailos ir baldininkų darbų koordinavimas, korpusinių baldų gamybos organizavimas, susitikimai salonuose ir nuolatinis ryšys su klientais.</p></div>
     </div>
     <div class="spec">
       <div class="sh">
         <h3>Techninis projektas, pagal kurį dirba meistrai</h3>
-        <p>Brėžinių paketas „Start“ parengiamas per 2–3 savaites. Jis būtinas, jei norite įsirengti kokybiškai ir be klaidų — net ir be pilno dizaino projekto.</p>
+        <p>Brėžinių paketas „Start“ parengiamas per 2–3 savaites. Jis būtinas, jei norite įsirengti kokybiškai ir be klaidų, net ir be pilno dizaino projekto.</p>
       </div>
       <ul>
         <li>Pertvarų ir durų angų planas</li>
@@ -261,8 +261,8 @@ def index_html():
       </div>
     </div>
     <div class="quotes">
-      <blockquote class="qt"><p>„Supratau, kaip reikia planuoti apšvietimą, kaip derinti spalvas, kaip meistrams pateikti brėžinius. Patarimai labai naudingi ir vertingi — meistrai dažniausiai pasako tik iš techninės pusės, o dizaineris pagalvoja ir apie grožį.“<br></p><footer>Gerda, vieša rekomendacija „Facebook“</footer></blockquote>
-      <blockquote class="qt"><p>„Ačiū už kantrybę ir už tai, kad sukūrei mums namus. Mes jau nuotraukas žiūrim ir netikim, kaip dabar gražu — net nesitiki, kad sunkiausias laikotarpis praeitas ir jau matosi toks nerealus rezultatas.“</p><footer>Klientės žinutė įrengimo eigoje</footer></blockquote>
+      <blockquote class="qt"><p>„Supratau, kaip reikia planuoti apšvietimą, kaip derinti spalvas, kaip meistrams pateikti brėžinius. Patarimai labai naudingi ir vertingi – meistrai dažniausiai pasako tik iš techninės pusės, o dizaineris pagalvoja ir apie grožį.“<br></p><footer>Gerda, vieša rekomendacija „Facebook“</footer></blockquote>
+      <blockquote class="qt"><p>„Ačiū už kantrybę ir už tai, kad sukūrei mums namus. Mes jau nuotraukas žiūrim ir netikim, kaip dabar gražu, net nesitiki, kad sunkiausias laikotarpis praeitas ir jau matosi toks nerealus rezultatas.“</p><footer>Klientės žinutė įrengimo eigoje</footer></blockquote>
       <blockquote class="qt"><p>„Šį kartą nejaučiu jokios įtampos, nepergyvenu, nes žinau, kad patekome į profesionalias rankas.“</p><footer>Klientės laiškas po projektavimo etapo</footer></blockquote>
     </div>
   </div>
@@ -275,8 +275,8 @@ def index_html():
       <h2>Dizainerė, kuri lieka iki raktų</h2>
       <p class="role">Brigita Dikevičė · interjero dizainerė, studijos įkūrėja</p>
       <p>Studija NAMIE geriausia įsikūrusi Vilniaus senamiestyje, o projektai driekiasi nuo sostinės iki Lietuvos pajūrio. Dirbame su butais ir namais, kuriems reikia ne tik gražaus vaizdo, bet ir tiksliai suplanuotos kasdienybės.</p>
-      <p>Geras interjeras prasideda ne nuo dizaino, o nuo kokybiškai parengto techninio projekto — ir baigiasi ne vizualizacija, o įrengtais namais. Todėl liekame šalia per visą įrengimą: nieko nepamiršti, niekur nesuklysti ir laiku pastebėti tai, ko galbūt nepastebi niekas kitas.</p>
-      <p>„Gražus interjeras matomas nuotraukose, o geras interjeras — jaučiamas jame gyvenant.“</p>
+      <p>Geras interjeras prasideda ne nuo dizaino, o nuo kokybiškai parengto techninio projekto, ir baigiasi ne vizualizacija, o įrengtais namais. Todėl liekame šalia per visą įrengimą: nieko nepamiršti, niekur nesuklysti ir laiku pastebėti tai, ko galbūt nepastebi niekas kitas.</p>
+      <p>„Gražus interjeras matomas nuotraukose, o geras interjeras – jaučiamas jame gyvenant.“</p>
     </div>
   </div>
 </section>'''
@@ -290,7 +290,7 @@ def index_html():
     <div class="contact">
       <div class="ch">
         <h2>Pradėkime nuo pokalbio</h2>
-        <p class="ssub">Papasakokite apie savo būstą — atsakysime, kaip galėtume padėti, ir sutarsime konsultacijos laiką.</p>
+        <p class="ssub">Papasakokite apie savo būstą. Atsakysime, kaip galėtume padėti, ir sutarsime konsultacijos laiką.</p>
         <ul class="cl">
           <li><span class="lbl">Telefonas</span><a class="ulink" href="tel:+37068020901">+370 680 20901</a></li>
           <li><span class="lbl">El. paštas</span><a class="ulink" href="mailto:brigita@namiegeriausia.lt">brigita@namiegeriausia.lt</a></li>
@@ -314,8 +314,8 @@ def index_html():
 </section>'''
 
     head = HEAD.format(
-        title='NAMIE geriausia — interjero dizaino studija Vilniuje',
-        desc='Interjero projektavimas, 3D vizualizacijos, autorinė priežiūra ir pilnas įrengimas. Nuo idėjos iki įrengtų namų — studija Vilniaus senamiestyje.',
+        title='NAMIE geriausia · Interjero dizainas ir pilnas įrengimas Vilniuje',
+        desc='Interjero projektavimas, 3D vizualizacijos, autorinė priežiūra ir pilnas įrengimas. Nuo idėjos iki įrengtų namų. Studija Vilniaus senamiestyje.',
         canon=DOMAIN + '/', domain=DOMAIN, preload=hero_preload,
         schema=biz_schema + f'\n<script type="application/ld+json">{faq_schema}</script>')
     return head + hero + mani + proj + serv + proof + about + contact + ig_strip() + FOOT
@@ -324,7 +324,7 @@ def index_html():
 # ------------------------------------------------------- instagram strip
 def ig_strip():
     """Self-hosted strip built from data/ig-feed.json (refreshed by fetch_ig.py).
-    Renders nothing at all if the feed file is missing — never a broken section."""
+    Renders nothing at all if the feed file is missing, never a broken section."""
     fp = os.path.join(ROOT, 'data/ig-feed.json')
     if not os.path.exists(fp):
         return ''
@@ -358,10 +358,10 @@ def ig_strip():
                 # One fixed source, no srcset: with srcset the duplicate track
                 # resolved to different variants and several tiles never picked a
                 # source at all, drifting in as blur mush. 640px covers 300px @2x
-                # and the duplicate tiles are pure cache hits. Not lazy either —
+                # and the duplicate tiles are pure cache hits. Not lazy either:
                 # native lazy-loading does not fire for a transform-driven track.
-                f'<img src="/img/ig-{p["code"]}-640.webp" alt="{alt}" '
-                f'decoding="async" width="640" height="640">{vid}</span>'
+                f'<img src="/img/ig-{p["code"]}-900.webp" alt="{alt}" '
+                f'decoding="async" width="900" height="900">{vid}</span>'
                 f'<span class="igb">'
                 f'<span class="igacts" aria-hidden="true">{HEART}{BUBBLE}{SEND}</span>'
                 f'<span class="igcap">{cap}</span>'
@@ -437,7 +437,7 @@ def project_html(p, nxt):
 </div></section>''')
 
     head = HEAD.format(
-        title=f'{p["title"]} — NAMIE geriausia',
+        title=f'{p["title"]} · NAMIE geriausia',
         desc=(p['intro'][:150] + '…') if len(p['intro']) > 152 else p['intro'],
         canon=f'{DOMAIN}/projektai/{s}/', domain=DOMAIN, preload='', schema='')
     return head + '\n'.join(parts) + FOOT
@@ -453,7 +453,8 @@ for n, p in enumerate(P):
     urls.append(f'{DOMAIN}/projektai/{p["slug"]}/')
 
 sm = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
-sm += '\n'.join(f'  <url><loc>{u}</loc><lastmod>2026-08-06</lastmod></url>' for u in urls)
+_lastmod = datetime.date.today().isoformat()
+sm += '\n'.join(f'  <url><loc>{u}</loc><lastmod>{_lastmod}</lastmod></url>' for u in urls)
 sm += '\n</urlset>\n'
 open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(sm)
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(
