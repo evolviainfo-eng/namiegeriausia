@@ -246,7 +246,7 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 .sec{padding-top:var(--sec)}
 .sec:last-of-type{padding-bottom:var(--sec)}
 .sec h2{font-size:var(--s4);max-width:22ch}
-.sec .ssub{margin-top:14px;color:var(--muted);max-width:52ch}
+.sec .ssub{margin-top:26px;color:var(--muted);max-width:52ch}
 
 /* manifesto */
 /* deliberately tighter than --sec: the quote must peek under the hero,
@@ -294,9 +294,13 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 
 /* proof */
 .proof{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:8px}
-.proof .ph{grid-column:1/5}
+/* Heading anchors the top, the press list anchors the bottom, so the column
+   ends level with the quotes instead of stopping 239px short and leaving a
+   dead corner under it. */
+.proof .ph{grid-column:1/5;display:flex;flex-direction:column;
+  justify-content:space-between;gap:64px}
 .proof .ph h2{font-size:var(--s4)}
-.press{margin-top:48px}
+.press{margin-top:0}
 .press h3{font-size:var(--s0);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .press ul{list-style:none;margin-top:18px}
 .press li{padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:var(--s1)}
@@ -313,9 +317,12 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 .about figure{grid-column:1/6;aspect-ratio:3/4;overflow:hidden;background:var(--surface)}
 .about .at{grid-column:7/13;align-self:center}
 .about .at h2{font-size:var(--s4)}
-.about .at .role{margin-top:8px;color:var(--muted);font-size:var(--s1)}
+.about .at .role{margin-top:16px;color:var(--muted);font-size:var(--s1)}
 .about .at p{margin-top:24px;max-width:48ch}
-.about .at p+p{margin-top:16px}
+.about .at p+p{margin-top:22px}
+/* the byline belongs to the heading, so it sits tight under it and the body
+   starts a clear step below, instead of all three being 16px apart */
+.about .at .role+p{margin-top:34px}
 @media (max-width:900px){.about figure,.about .at{grid-column:1/-1}.about .at{margin-top:40px}}
 
 /* contact */
@@ -340,7 +347,7 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 
 /* faq */
 .faq{margin-top:96px;max-width:760px}
-.faq h3{font-size:var(--s3);font-weight:400}
+.faq h3{font-size:var(--s3);font-weight:400;margin-bottom:32px}
 .faq details{border-top:1px solid var(--line-soft)}
 .faq details:last-child{border-bottom:1px solid var(--line-soft)}
 .faq summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:baseline;
