@@ -252,6 +252,10 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 /* deliberately tighter than --sec: the quote must peek under the hero,
    otherwise the fold shows a blank band of paper */
 .mani{padding-top:clamp(56px,7vh,88px);padding-bottom:0}
+/* The manifesto is a short block that answers the hero, so it sits close under
+   it. The full 176px section step after it left a void taller than the quote
+   itself: 63px above, 176px below, 244px of content between them. */
+.mani+.sec{padding-top:112px}
 .mani blockquote p{font-size:var(--s3);font-weight:300;line-height:1.5;max-width:52ch}
 .mani blockquote strong{font-weight:500}
 .mani figcaption{margin-top:26px;font-size:var(--s1);color:var(--muted)}
@@ -293,7 +297,7 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 @media (max-width:760px){.spec .sh,.spec ul{grid-column:1/-1}.spec ul{columns:1;margin-top:8px}}
 
 /* proof */
-.proof{display:grid;grid-template-columns:repeat(12,1fr);gap:24px;margin-top:8px}
+.proof{display:grid;grid-template-columns:repeat(12,1fr);gap:24px}
 /* Heading anchors the top, the press list anchors the bottom, so the column
    ends level with the quotes instead of stopping 239px short and leaving a
    dead corner under it. */
