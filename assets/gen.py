@@ -93,7 +93,7 @@ HEAD = '''<!DOCTYPE html>
     <nav aria-label="Pagrindinė navigacija">
       <ul>
         <li class="hm"><a class="tlink" href="/#projektai">Projektai</a></li>
-        <li class="hm"><a class="tlink" href="/#paslaugos">Paslaugos</a></li>
+        <li class="hm"><a class="tlink" href="/paslaugos/">Paslaugos</a></li>
         <li class="hm"><a class="tlink" href="/#kontaktai">Kontaktai</a></li>
         <li><a class="call" href="tel:+37068020901">+370 680 20901</a></li>
       </ul>
@@ -117,7 +117,7 @@ FOOT = '''</main>
       <nav class="fn" aria-label="Papildoma navigacija">
         <ul>
           <li><a class="tlink" href="/#projektai">Projektai</a></li>
-          <li><a class="tlink" href="/#paslaugos">Paslaugos</a></li>
+          <li><a class="tlink" href="/paslaugos/">Paslaugos</a></li>
           <li><a class="tlink" href="https://www.instagram.com/namiegeriausia/" rel="noopener" target="_blank">Instagram</a></li>
           <li><a class="tlink" href="https://www.facebook.com/namiegeriausia/" rel="noopener" target="_blank">Facebook</a></li>
         </ul>
@@ -242,6 +242,7 @@ def index_html():
         <li>Plytelių klijavimo išklotinės</li>
       </ul>
     </div>
+    <p class="smore"><a class="ulink" href="/paslaugos/">Visos paslaugos ir paketai</a></p>
   </div>
 </section>'''
 
@@ -442,9 +443,200 @@ def project_html(p, nxt):
         canon=f'{DOMAIN}/projektai/{s}/', domain=DOMAIN, preload='', schema='')
     return head + '\n'.join(parts) + FOOT
 
+# ---------------------------------------------------------------- paslaugos
+SU_URL = ('https://app.sketchup.com/share/tc/europe/H5QBWxUXzNM'
+          '?source=web&amp;stoken=JMZF_jnJaIm6DI9FcP789ki5P6AQIWXq_HsynWDNKlcSb9f_dpjSK2VzG6Mx4yVC')
+
+MAXI_GROUPS = [
+    ('Planai', [
+        'Detalusis baldų išdėstymo planas',
+        'Pertvarų ir durų angų planas',
+        'Santechnikos pririšimo planas',
+        'Kištukinių lizdų planas',
+        'Šviestuvų ir apšvietimo valdymo planas',
+        'Lubų planas',
+        'Difuzorių pririšimo planas',
+        'Sienų dengimo planas',
+        'Grindų klojimo planas',
+    ]),
+    ('Išklotinės', [
+        'Plytelių klijavimo išklotinės',
+        'Visų aktualių sienų išklotinės su stilistiniais sprendimais',
+    ]),
+    ('Baldų detalizacijos', [
+        'Nestandartinių gaminamų baldų (virtuvė, spintos, vonios spintelės) konstruktyvas ir funkcionalumas',
+        'Gaminamų minkštųjų baldų detalizacijos',
+        'Sudėtingų techninių mazgų detalizacijos',
+    ]),
+    ('Vizualūs sprendimai', [
+        'Stilistiniai koliažai ir vizualūs pavyzdžiai su aprašymais',
+        'Interaktyvus 3D modelis',
+    ]),
+    ('Susitikimai', [
+        'Trys susitikimai aptarimams, gyvai arba online',
+    ]),
+]
+
+PREMIUM_GROUPS = [
+    ('Apdaila', [
+        'Plytelės',
+        'Grindų danga',
+        'Grindjuostės, sienų ir lubų dekoras',
+    ]),
+    ('Santechnika ir elektra', [
+        'Santechnikos prietaisai',
+        'Funkciniai ir dekoratyviniai šviestuvai',
+        'Elektros mechanizmai',
+    ]),
+    ('Durys ir baldai', [
+        'Durys ir rankenos',
+        'Baldinės plokštės ir furnitūra',
+        'Virtuvės ir vonios stalviršiai',
+        'Baldinės rankenėlės ir kojelės',
+        'Lauko baldai',
+    ]),
+    ('Tekstilė ir dekoras', [
+        'Minkštieji baldai ir audiniai',
+        'Smulkieji baldai, kilimai, paveikslai',
+        'Užuolaidos, žaliuzės, romanetės',
+        'Veidrodžiai ir stiklo gaminiai',
+    ]),
+    ('Susitikimai', [
+        'Dar du gyvi susitikimai pasirinkimams užtvirtinti',
+    ]),
+]
+
+PRIEZIURA_ITEMS = [
+    'Susitikimai salonuose pasirinkimams patvirtinti',
+    'Medžiagų, baldų ir šviestuvų užsakymų organizavimas, kiekių tikslinimas, tiekėjų konkursavimas',
+    'Nuolatinis darbas su apdailos meistrais ir periodiniai vizitai į objektą',
+    'Korpusinių ir minkštųjų baldų gamybos organizavimas ir gaminių patikrinimas',
+    'Nestandartinių sprendimų įgyvendinimas',
+    'Brėžinių tikslinimas',
+    'Konsultavimas ir būsto dekoravimas',
+]
+
+STEPS = [
+    'Apklausa, kuri išgrynina esminius poreikius.',
+    'Kartu analizuojame jūsų šeimos įpročius ir priimame kertinius dizaino sprendimus.',
+    'Sprendimai virsta būsto brėžinių byla, su kuria dirba meistrai ir gamintojai.',
+]
+
+
+def groups_html(groups):
+    """Spec groups. Rendered <details open> so a no-JS phone shows everything;
+    site.js is what collapses them below 900px, never the markup."""
+    out = []
+    for h, items in groups:
+        lis = ''.join(f'<li>{it}</li>' for it in items)
+        out.append(f'<details class="pkgrp" open><summary>{h}</summary>'
+                   f'<ul>{lis}</ul></details>')
+    return ''.join(out)
+
+
+def package_html(name, subtitle, fit, groups, closing, badge=None, plus=None):
+    b = f'<p class="pkbadge">{badge}</p>' if badge else ''
+    pl = f'<p class="pkplus">{plus}</p>' if plus else ''
+    return f'''<article class="pkg{' hl' if badge else ''}">
+  {b}<h2 class="pkname">{name}</h2>
+  <p class="pksub">{subtitle}</p>
+  <p class="pkfit">{fit}</p>
+  {pl}<div class="pkgrps">{groups_html(groups)}</div>
+  <p class="pkclose">{closing}</p>
+</article>'''
+
+
+def paslaugos_html():
+    maxi = package_html(
+        'MAXI', 'Techninis interjero projektas',
+        'Tiems, kurie patys renkasi apdailos medžiagas, spalvas, šviestuvus ir baldus, '
+        'o dizainerio reikia projektavimo etape: techniniams, inžineriniams ir ergonomikos sprendimams.',
+        MAXI_GROUPS,
+        'Pilna techninių brėžinių byla užtikrina sklandų darbą su apdailos meistrais ir '
+        'baldų gamintojais ir padeda išvengti brangių statybinių klaidų.')
+
+    premium = package_html(
+        'PREMIUM', 'Projektas ir medžiagų parinkimas',
+        'Tiems, kurie nori, kad visas interjeras būtų apgalvotas iki smulkmenų: prie techninio '
+        'projekto pridedamas konkrečių medžiagų, šviestuvų, baldų ir tekstilės parinkimas pagal jūsų biudžetą.',
+        PREMIUM_GROUPS,
+        'Gaunate tikslų parinkčių sąrašą su nuorodomis ir tiekėjų pasiūlymais, daugumą jų '
+        'su dizainerio nuolaida.',
+        badge='Pilnas įsitraukimas',
+        plus='Viskas, kas įeina į MAXI, plius:')
+
+    head_block = '''<div class="wrap phead">
+  <p class="crumb"><a class="back" href="/">← Į pradžią</a></p>
+  <h1>Paslaugos</h1>
+  <p class="lead">Pasirinkite, kiek dizainerio įsitraukimo norite į savo namų interjero kūrimą ir įgyvendinimą.</p>
+</div>'''
+
+    packages = f'''<section class="sec pksec" aria-label="Paslaugų paketai">
+  <div class="wrap"><div class="pkgs">{maxi}{premium}</div></div>
+</section>'''
+
+    prz = ''.join(f'<li>{it}</li>' for it in PRIEZIURA_ITEMS)
+    addons = f'''<section class="sec" id="papildomai">
+  <div class="wrap">
+    <h2>Papildomai prie PREMIUM</h2>
+    <div class="addons">
+      <article class="acard">
+        <h3>Realistinės vizualizacijos</h3>
+        <p>Aukštos raiškos būsimo rezultato nuotrauka, kai interaktyvaus 3D modelio nepakanka: leidžia pasimatuoti skirtingus sprendimus, daiktus ir spalvas prieš įgyvendinant.</p>
+      </article>
+      <article class="acard">
+        <h3>Autorinė priežiūra</h3>
+        <p>Dizainerė lydi visą įrengimą.</p>
+        <ul class="alist">{prz}</ul>
+      </article>
+    </div>
+  </div>
+</section>'''
+
+    steps = ''.join(
+        f'<li><span class="sn">{n}</span><p>{t}</p></li>'
+        for n, t in enumerate(STEPS, 1))
+    how = f'''<section class="sec" id="eiga">
+  <div class="wrap">
+    <h2>Kaip vyksta</h2>
+    <ol class="steps">{steps}</ol>
+  </div>
+</section>'''
+
+    # No iframe. The SketchUp viewer needs about a minute to paint, opens its own
+    # sign-in prompt and welcome modal over the model, and never renders at all at
+    # phone width. A link that opens it in its own tab is the only version that
+    # actually works for a visitor.
+    model = f'''<section class="sec" id="modelis">
+  <div class="wrap">
+    <div class="m3d">
+      <div class="m3dt">
+        <h2>Interaktyvus 3D modelis</h2>
+        <p>Kiekvienas projektas pateikiamas ir kaip interaktyvus 3D modelis, kurį galite apžiūrėti iš visų pusių.</p>
+      </div>
+      <a class="btn" href="{SU_URL}" target="_blank" rel="noopener">Atidaryti 3D modelį</a>
+    </div>
+  </div>
+</section>'''
+
+    cta = '''<section class="sec pcta">
+  <div class="wrap"><div class="ctab">
+    <p class="ctat">Kaina priklauso nuo būsto ploto ir pasirinkto paketo.</p>
+    <a class="btn" href="/#kontaktai">Parašykite</a>
+  </div></div>
+</section>'''
+
+    head = HEAD.format(
+        title='Paslaugos | Namie geriausia',
+        desc='Pasirinkite, kiek dizainerio įsitraukimo norite į savo namų interjero kūrimą ir įgyvendinimą.',
+        canon=DOMAIN + '/paslaugos/', domain=DOMAIN, preload='', schema='')
+    return head + head_block + packages + addons + how + model + cta + FOOT
+
 # ---------------------------------------------------------------- emit
 open(os.path.join(ROOT, 'index.html'), 'w').write(index_html())
-urls = [DOMAIN + '/']
+os.makedirs(os.path.join(ROOT, 'paslaugos'), exist_ok=True)
+open(os.path.join(ROOT, 'paslaugos/index.html'), 'w').write(paslaugos_html())
+urls = [DOMAIN + '/', DOMAIN + '/paslaugos/']
 for n, p in enumerate(P):
     nxt = P[(n + 1) % len(P)]
     d = os.path.join(ROOT, 'projektai', p['slug'])
@@ -459,4 +651,4 @@ sm += '\n</urlset>\n'
 open(os.path.join(ROOT, 'sitemap.xml'), 'w').write(sm)
 open(os.path.join(ROOT, 'robots.txt'), 'w').write(
     'User-agent: *\nAllow: /\n\nSitemap: ' + DOMAIN + '/sitemap.xml\n')
-print('index + %d project pages + sitemap written' % len(P))
+print('index + paslaugos + %d project pages + sitemap written' % len(P))

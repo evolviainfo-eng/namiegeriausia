@@ -24,3 +24,5 @@ assets/sr-ig/
 assets/sr_mps.py
 assets/sr_fix.py
 assets/used_sources.txt
+
+.claude/

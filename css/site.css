@@ -417,6 +417,98 @@ html.js .sec h2.rv.in + .lead{opacity:1;transition:opacity 520ms linear 180ms}
 .pnext .nx:hover .nt,.pnext .nx:focus-visible .nt{color:var(--muted)}
 @media (max-width:640px){.pnrow{flex-direction:column;align-items:flex-start}.pnext .nx{align-items:flex-start;text-align:left}}
 
+/* ---------- paslaugos ---------- */
+/* Same system as everywhere else: hairlines, radius 0, no shadows, the
+   uppercase tracked label from .press, the hairline row list from .spec.
+   Nothing new is invented here, only recombined. */
+
+/* the head is the project-page head, so the page opens like the rest of the site */
+.smore{margin-top:56px;font-size:var(--s1)}
+
+.pksec{padding-top:88px}
+.pkgs{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;align-items:stretch}
+.pkg{position:relative;display:flex;flex-direction:column;
+  border:1px solid var(--line-soft);padding:52px 44px 44px}
+.pkg.hl{background:var(--surface);border-color:var(--line)}
+/* a hairline notch in the corner rather than a pill: the site has no pills */
+.pkbadge{position:absolute;top:0;right:0;padding:11px 18px;
+  border-left:1px solid var(--line);border-bottom:1px solid var(--line);
+  font-size:var(--s0);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.pkg .pkname{font-size:var(--s4);font-weight:300;letter-spacing:.02em}
+.pkg .pksub{margin-top:10px;font-size:var(--s3);font-weight:300;line-height:1.3;color:var(--muted)}
+.pkg .pkfit{margin-top:28px;font-size:var(--s1);line-height:1.6;max-width:46ch}
+.pkg .pkplus{margin-top:34px;font-size:var(--s1);font-weight:500}
+/* the price rule used to hold this gap open; without it the first group would
+   sit 22px under the paragraph */
+.pkgrps{margin-top:36px}
+.pkg .pkplus + .pkgrps{margin-top:22px}
+
+.pkgrp{border-top:1px solid var(--line-soft)}
+.pkgrp:last-child{border-bottom:1px solid var(--line-soft)}
+.pkgrp summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  padding:18px 0;font-size:var(--s0);font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.pkgrp summary::-webkit-details-marker{display:none}
+.pkgrp summary::after{content:"+";font-size:var(--s3);font-weight:300;line-height:1;letter-spacing:0;
+  color:var(--muted);transition:transform var(--t2) var(--ui);opacity:0}
+.pkgrp[open] summary::after{transform:rotate(45deg)}
+.pkgrp ul{list-style:none;padding-bottom:14px}
+.pkgrp li{font-size:var(--s1);line-height:1.5;padding:11px 0;border-top:1px solid var(--line-soft)}
+.pkclose{margin-top:auto;padding-top:34px;font-size:var(--s1);line-height:1.6;color:var(--muted);max-width:46ch}
+
+/* below 900 the two packages stack, and the groups become a real accordion
+   (site.js closes them; the markup ships open so a no-JS phone sees everything) */
+@media (min-width:901px){.pkgrp summary{cursor:default;pointer-events:none}}
+@media (max-width:900px){
+  .pkgs{grid-template-columns:1fr;gap:20px}
+  .pkg{padding:36px 24px 34px}
+  .pkbadge{position:static;padding:0 0 16px;border:0}
+  .pkgrp summary{cursor:pointer;padding:20px 0}
+  .pkgrp summary::after{opacity:1}
+}
+@media (max-width:640px){.pkg{padding:32px 20px 30px}}
+
+/* the two add-ons are hairline columns, not boxes: they sit one level below
+   the packages and the hierarchy has to show it */
+.addons{margin-top:56px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px 48px;align-items:start}
+.acard{border-top:1px solid var(--line);padding-top:26px}
+.acard h3{font-size:var(--s3);font-weight:400}
+.acard>p{margin-top:16px;font-size:var(--s1);line-height:1.6;color:var(--muted);max-width:46ch}
+.acard .alist{list-style:none;margin-top:24px}
+.acard .alist li{font-size:var(--s1);line-height:1.5;padding:11px 0;border-bottom:1px solid var(--line-soft)}
+@media (max-width:760px){.addons{grid-template-columns:1fr;gap:40px}}
+
+.steps{list-style:none;margin-top:56px;border-top:1px solid var(--line-soft);max-width:900px}
+.steps li{display:grid;grid-template-columns:72px 1fr;gap:24px;align-items:baseline;
+  padding:30px 0;border-bottom:1px solid var(--line-soft)}
+.steps .sn{font-size:var(--s1);color:var(--muted);font-variant-numeric:tabular-nums}
+.steps p{font-size:var(--s3);font-weight:300;line-height:1.45;max-width:44ch}
+@media (max-width:640px){
+  .steps li{grid-template-columns:1fr;gap:8px;padding:24px 0}
+  .steps p{font-size:var(--s2);line-height:1.5}
+}
+
+/* one bordered row: the text on the left, the button that opens the model in
+   its own tab on the right. Same hairline and radius as the package cards. */
+.m3d{display:flex;align-items:center;justify-content:space-between;gap:28px 48px;
+  border:1px solid var(--line);padding:40px 44px}
+.m3d h2{font-size:var(--s3);font-weight:400;max-width:none}
+.m3d .m3dt p{margin-top:12px;font-size:var(--s1);line-height:1.6;color:var(--muted);max-width:56ch}
+.m3d .btn{flex:0 0 auto}
+@media (max-width:760px){
+  .m3d{flex-direction:column;align-items:stretch;padding:30px 24px}
+  .m3d .btn{width:100%;text-align:center}
+}
+@media (max-width:640px){.m3d{padding:26px 20px}}
+
+/* .sec:last-of-type adds a second --sec on top of the footer's own margin, so
+   the page ended on 352px of nothing. One section step is enough. */
+.sec.pcta:last-of-type{padding-bottom:0}
+.pcta .ctab{border-top:1px solid var(--line-soft);padding-top:40px;
+  display:flex;justify-content:space-between;align-items:center;gap:32px 48px;flex-wrap:wrap}
+.pcta .ctat{font-size:var(--s4);font-weight:300;letter-spacing:-.02em;line-height:1.2;
+  max-width:20ch;text-wrap:balance}
+@media (max-width:640px){.pcta .ctab{align-items:flex-start;gap:28px}}
+
 /* ---------- media parallax (desktop, supported browsers only) ---------- */
 @media (min-width:1024px) and (prefers-reduced-motion:no-preference){
   @supports (animation-timeline: view()){

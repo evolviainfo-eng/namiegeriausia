@@ -262,6 +262,22 @@
     }, { passive: true });
   }
 
+  /* ---- paslaugos: spec groups collapse on phones ----
+     The markup ships <details open>, so with no JS every group is readable.
+     JS is what turns them into an accordion below 900px, never the other way
+     round. Re-synced on the breakpoint change only, so a group the visitor
+     opened by hand is not slammed shut while they read it. */
+  var pkgrps = [].slice.call(document.querySelectorAll('details.pkgrp'));
+  if (pkgrps.length && window.matchMedia) {
+    var small = window.matchMedia('(max-width: 900px)');
+    function syncGroups() {
+      pkgrps.forEach(function (d) { d.open = !small.matches; });
+    }
+    syncGroups();
+    if (small.addEventListener) small.addEventListener('change', syncGroups);
+    else if (small.addListener) small.addListener(syncGroups);
+  }
+
   /* contact form -> mailto compose + inline confirmation */
   var f = document.getElementById('cf');
   if (f) {
