@@ -64,6 +64,32 @@
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
+  /* ---- phone menu ----
+     <details> already carries the open state and works without JS. This only
+     adds what markup cannot: locking the page behind the panel, closing on a
+     link or Escape, and closing itself if the viewport grows past 640. */
+  var mnav = document.querySelector('.mnav');
+  if (mnav) {
+    var navBar = document.querySelector('.nav');
+    mnav.addEventListener('toggle', function () {
+      de.classList.toggle('mnav-open', mnav.open);
+      navBar.classList.toggle('menu-open', mnav.open);
+    });
+    mnav.addEventListener('click', function (e) {
+      if (e.target.closest('.mpanel a')) mnav.open = false;
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && mnav.open) {
+        mnav.open = false;
+        mnav.querySelector('summary').focus();
+      }
+    });
+    var wide = window.matchMedia('(min-width: 641px)');
+    function mWide() { if (wide.matches) mnav.open = false; }
+    if (wide.addEventListener) wide.addEventListener('change', mWide);
+    else if (wide.addListener) wide.addListener(mWide);
+  }
+
   /* ---- instagram strip ---- */
   var igs = document.querySelector('.igs');
   if (igs) {
